@@ -1,0 +1,153 @@
+NestedScenarios
+================
+
+This plugin is based on FixtureScenarios and FixtureScenarioBuilder.
+It includes both worlds in just one plugin with some fixes, new features
+and Rails 2.2 support.
+
+You can check them at:
+
+  FixtureScenarios
+    Info: http://code.google.com/p/fixture-scenarios/
+    SVN : http://fixture-scenarios.googlecode.com/svn/trunk/fixture_scenarios
+
+  FixtureScenariosBuilder
+    Info: http://errtheblog.com/post/7708
+    SVN : svn://errtheblog.com/svn/plugins/fixture_scenarios_builder
+
+  NestedScenarios
+    Info: 
+    Git : http://github.com/josevalim/nested_scenarios
+
+== Setup
+
+You may, from time to time, wish to build your fixtures entirely in Ruby.
+Doing so has its advantages, such as automatically created join tables
+and default attributes.  YAML files, however, bring with them some real
+nice features in Rails which are difficult to abandon: transactional fixtures, 
+table_name(:key) helpers, and auto-clearing between tests.  How does one get 
+the best of both worlds?
+
+== Usage
+
+Using the +scenario+ method within <tt>scenarios.rb</tt> file,
+FixtureScenariosBuilder can create your YAML fixture scenarios automatically
+at run time from Ruby-created fixtures.
+
+Any file inside the +fixture_path+ called scenarios.rb is loaded to
+generating scenarios:
+
+  [RAILS_ROOT]
+  +-test/
+    +-fixtures/
+      +-scenarios.rb
+
+Or: 
+
+  [RAILS_ROOT]
+  +-spec/
+    +-fixtures/
+      +-models/
+        +-scenarios.rb
+      +-controllers/
+        +-scenarios.rb
+      +-helpers/
+        +-scenarios.rb
+
+Now build your scenarios in those file, wrapping scenarios in the 
++scenario+ method and providing it with the name of your scenario.  
+A brief example of a complete <tt>scenarios.rb</tt> file:
+
+  scenario :banned_users do
+    %w( Tom Chris Kevin ).each_with_index do |user, index|
+      User.create(:name => user, :banned => index.odd?)
+    end
+  end
+
+Assuming +banned+ is a boolean field, this will create for us:
+
+  [RAILS_ROOT]
+  +-test/
+    +-fixtures/
+      +-banned_users/
+        +-users.yml
+
+Our generated <tt>users.yml</tt> file will look something like this:
+
+  chris: 
+    name: Chris
+    id: "2"
+    banned: "1"
+    updated_at: 2007-05-09 09:08:04
+    created_at: 2007-05-09 09:08:04
+  kevin: 
+    name: Kevin
+    id: "3"
+    banned: "0"
+    updated_at: 2007-05-09 09:08:04
+    created_at: 2007-05-09 09:08:04
+  tom: 
+    name: Tom
+    id: "1"
+    banned: "0"
+    updated_at: 2007-05-09 09:08:04
+    created_at: 2007-05-09 09:08:04
+
+Notice how the keys correspond to the user names. You can register fields that
+can be used as fixtures names by:
+
+  NestedScenarios.record_name_fields << :nickname
+
+You can assign your records to instance variables, then call +names_from_ivars+
+at the conclusion of your +scenario+ block.
+
+  scenario :foo do
+    @small_red_widget = Widget.create(:size => 'small', :color => 'red')
+    @big_blue_widget  = Widget.create(:size => 'big',   :color => 'blue')
+
+    names_from_ivars!
+  end
+
+The above produces the following YAML:
+
+  small_red_widget:
+    size: small
+    color: red
+    updated_at: 2007-12-27 10:09:05
+    created_at: 2007-12-27 10:09:05
+  big_blue_widget:
+    size: big
+    color: blue
+    updated_at: 2007-12-27 10:19:23
+    created_at: 2007-12-27 10:19:23
+
+To build the scenario you have to run:
+
+  rake db:build:scenario
+
+In NestedScenarios, scenarios are not generated automatically. Another change
+is how scenarios are nested:
+
+  scenario :models => { :users => :banned } do
+    User.create(:name => 'Kevin', :banned => true)
+  end
+
+This will create an YAML in the following dir:
+
+  [RAILS_ROOT]
+  +-test/
+    +-fixtures/
+      +-models/
+        +-users/
+          +-banned/
+            +-users.yml
+
+Finally, you can choose which scenario to use in your tests by:
+
+  scenario :users
+
+Or, in the case of nested scenarios:
+
+  scenario :models => { :users => :banned }
+
+If no scenario is sent, the default behaviour is adopted.
