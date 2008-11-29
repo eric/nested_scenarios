@@ -1,5 +1,5 @@
 Gem::Specification.new do |s|
-  s.name     = "grit"
+  s.name     = "nested_scenarios"
   s.version  = "0.1"
   s.date     = "2008-11-29"
   s.summary  = "FixtureScenarios, FixtureScenariosBuilder, Yaml and Ruby in one big mix for Rails"
