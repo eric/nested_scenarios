@@ -16,10 +16,25 @@ You can check them at:
     SVN : svn://errtheblog.com/svn/plugins/fixture_scenarios_builder
 
   NestedScenarios
-    Info: 
+    Info: http://josevalim.blogspot.com/
     Git : http://github.com/josevalim/nested_scenarios
 
-== Setup
+== Install
+
+Install NestedScenarios is very easy. It is stored in GitHub, so if you have
+never installed a gem via GitHub run the following:
+
+  gem sources -a http://gems.github.com
+
+Then install the gem:
+
+  sudo gem install josevalim-nested_scenarios
+
+In RAILS_ROOT/config/environment.rb:
+
+  config.gem "josevalim-nested_scenarios",  :lib => "nested_scenarios", :source => "http://gems.github.com"
+
+== Why
 
 You may, from time to time, wish to build your fixtures entirely in Ruby.
 Doing so has its advantages, such as automatically created join tables
