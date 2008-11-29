@@ -12,7 +12,6 @@ Gem::Specification.new do |s|
     "MIT-LICENSE",
 		"README",
 		"Rakefile",
-		"mested_scenarios.gemspec",
 		"init.rb",
 		"lib/join.rb",
 		"lib/fixtures.rb",
