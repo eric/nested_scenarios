@@ -34,6 +34,12 @@ In RAILS_ROOT/config/environment.rb:
 
   config.gem "josevalim-nested_scenarios",  :lib => "nested_scenarios", :source => "http://gems.github.com"
 
+If you want it as plugin, just do:
+
+    cd myapp
+    git clone git://github.com/josevalim/nested_scenarios.git
+    rm -rf vendor/plugins/nested_scenarios/.git
+
 == Why
 
 You may, from time to time, wish to build your fixtures entirely in Ruby.
