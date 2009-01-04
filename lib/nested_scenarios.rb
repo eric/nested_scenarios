@@ -1,20 +1,11 @@
-class NestedScenarios
-  cattr_accessor :record_name_fields, :skip_tables
-  @@record_name_fields = %w( name username title )
-  @@skip_tables        = %w( schema_migrations )
+if RAILS_ENV == 'test'
+  require 'test/unit/testcase'
+  require 'test/unit/testsuite'
+  require 'active_record/fixtures'
 
-  def self.delete_tables(table_names = self.tables)
-    connection = ActiveRecord::Base.connection
-    ActiveRecord::Base.silence do
-      connection.disable_referential_integrity do
-        (table_names - @@skip_tables).each do |table_name|
-          connection.delete "DELETE FROM #{table_name}", 'Fixture Delete'
-        end
-      end
-    end
-  end
-
-  def self.tables
-    ActiveRecord::Base.connection.tables - @@skip_tables
-  end
+  dir = File.dirname(__FILE__)
+  require File.join(dir, 'nested_scenarios', 'builder')
+  require File.join(dir, 'nested_scenarios', 'fixtures')
+  require File.join(dir, 'nested_scenarios', 'join')
+  require File.join(dir, 'nested_scenarios', 'nested_scenarios')
 end

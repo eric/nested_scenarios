@@ -33,4 +33,4 @@ module ActiveSupport #:nodoc:
   end
 end
 
-Hash.__send__ :include, ActiveSupport::CoreExtensions::Hash::Join
+Hash.send :include, ActiveSupport::CoreExtensions::Hash::Join

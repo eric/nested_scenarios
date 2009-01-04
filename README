@@ -1,5 +1,5 @@
-NestedScenarios v0.1
-====================
+NestedScenarios v0.1.1
+======================
 
 This plugin is based on FixtureScenarios and FixtureScenarioBuilder.
 It includes both worlds in just one plugin with some fixes, new features

@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name     = "nested_scenarios"
-  s.version  = "0.1"
+  s.version  = "0.1.1"
   s.date     = "2008-11-29"
   s.summary  = "FixtureScenarios, FixtureScenariosBuilder, Yaml and Ruby in one big mix for Rails"
   s.email    = "jose.valim@gmail.com"
@@ -10,13 +10,13 @@ Gem::Specification.new do |s|
   s.authors  = [ "José Valim" ]
   s.files    = [
     "MIT-LICENSE",
-		"README",
-		"Rakefile",
-		"init.rb",
-		"lib/join.rb",
-		"lib/fixtures.rb",
+    "README",
+    "Rakefile",
     "lib/nested_scenarios.rb",
-    "lib/builder.rb",
+    "lib/nested_scenarios/builder.rb",
+    "lib/nested_scenarios/fixtures.rb",
+    "lib/nested_scenarios/join.rb",
+    "lib/nested_scenarios/nested_scenarios.rb",
     "tasks/builder_tasks.rake"
   ]
   s.test_files = []
